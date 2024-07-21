@@ -85,6 +85,15 @@ public class Model {
      * */
     public boolean emptySpaceExists() {
         // TODO: Task 2. Fill in this function.
+        int size=size();
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                Tile t=tile(i,j);
+                if(t==null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -95,6 +104,18 @@ public class Model {
      */
     public boolean maxTileExists() {
         // TODO: Task 3. Fill in this function.
+        int size=size();
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                Tile t=tile(i,j);
+                if(t==null){
+                    continue;
+                }
+                if(t.value()==MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -106,6 +127,38 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
+        int size=size();
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                Tile t=tile(i,j);
+                if(t==null){
+                    return true;
+                }
+            }
+        }
+        for(int i=0;i<size-1;i++){
+            for(int j=0;j<size-1;j++){
+                Tile t1=tile(i,j);
+                Tile t2=tile(i,j+1);
+                Tile t3=tile(i+1,j);
+                if(t1.value()==t2.value()){
+                    return true;
+                }
+                if(t1.value()==t3.value()){
+                    return true;
+                }
+                if(j==size-2 || i==size-2){
+                    Tile t4=tile(i+1,j+1);
+                    if(t2.value()==t4.value()){
+                        return true;
+                    }
+                    if(t3.value()==t4.value()){
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
