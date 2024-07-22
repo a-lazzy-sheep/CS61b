@@ -127,15 +127,10 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
-        int size=size();
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                Tile t=tile(i,j);
-                if(t==null){
-                    return true;
-                }
-            }
+        if(emptySpaceExists()){
+            return true;
         }
+        int size=size();
         for(int i=0;i<size-1;i++){
             for(int j=0;j<size-1;j++){
                 Tile t1=tile(i,j);
@@ -180,6 +175,24 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
+        if(currTile!=null) {
+            int size=size();
+            Tile t=board.tile(x,size-1);
+            if(t==null){
+                board.move(x,size-1,currTile);
+            }else{
+                if(t.value()!=currTile.value()){
+                    board.move(x,size-2,currTile);
+                }else{
+                    if(!t.wasMerged()) {
+                        score+=2*t.value();
+                        board.move(x, size - 1, currTile);
+                    }else{
+                            board.move(x,size-2,currTile);
+                    }
+                }
+            }
+        }
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
     }
@@ -190,10 +203,21 @@ public class Model {
      * so we are tilting the tiles in this column up.
      * */
     public void tiltColumn(int x) {
+        for(int i=size()-2;i>=0;i--){
+            Tile t=board.tile(x,i);
+            if(t!=null){
+                moveTileUpAsFarAsPossible(x,i);
+            }
+        }
         // TODO: Task 7. Fill in this function.
     }
 
     public void tilt(Side side) {
+        board.setViewingPerspective(side);
+        for(int i=0;i<size();i++){
+            tiltColumn(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
         // TODO: Tasks 8 and 9. Fill in this function.
     }
 
