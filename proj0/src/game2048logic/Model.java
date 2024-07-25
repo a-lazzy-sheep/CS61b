@@ -177,18 +177,22 @@ public class Model {
         int targetY = y;
         if(currTile!=null) {
             int size=size();
-            Tile t=board.tile(x,size-1);
-            if(t==null){
-                board.move(x,size-1,currTile);
-            }else{
-                if(t.value()!=currTile.value()){
-                    board.move(x,size-2,currTile);
-                }else{
-                    if(!t.wasMerged()) {
-                        score+=2*t.value();
-                        board.move(x, size - 1, currTile);
-                    }else{
-                            board.move(x,size-2,currTile);
+            for(int position=targetY+1;position<size-1;position++) {
+                Tile t = board.tile(x, position);
+                if (t == null) {
+                    board.move(x, position, currTile);
+                } else {
+                    if (t.value() != currTile.value()) {
+                        continue;
+                    } else {
+                        if (!t.wasMerged()) {
+                            score += 2 * t.value();
+                            board.move(x, position, currTile);
+                            break;
+                        } else {
+                            board.move(x, position-1, currTile);
+                            break;
+                        }
                     }
                 }
             }
