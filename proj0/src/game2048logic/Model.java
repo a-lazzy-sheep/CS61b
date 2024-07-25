@@ -177,10 +177,11 @@ public class Model {
         int targetY = y;
         if(currTile!=null) {
             int size=size();
-            for(int position=targetY+1;position<size-1;position++) {
+            for(int position=size-1;position>targetY;position--) {
                 Tile t = board.tile(x, position);
                 if (t == null) {
                     board.move(x, position, currTile);
+                    break;
                 } else {
                     if (t.value() != currTile.value()) {
                         continue;
